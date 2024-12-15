@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 
 import Card from '../UI/Card';
 import Button from '../UI/Button';
 
-const Login = () => {
+const Login = (props) => {
     const [enteredEmail, setEnteredEmail] = useState('');
     const [enteredPassword, setEnteredPassword] = useState('');
     const [emailIsValid, setEmailIsValid] = useState();
     const [passwordIsValid, setPasswordIsValid] = useState();
-    const [formIsValid, setFormIsValid] = useState(false)
+    const [formIsValid, setFormIsValid] = useState(false);
 
     useEffect(() => {
         const timeOut = setTimeout(() => {
-            console.log('check form is valid')
-            setFormIsValid(emailIsValid && passwordIsValid)
-            console.log('checked')
-        }, 500)
+            console.log('check form is valid');
+            setFormIsValid(emailIsValid && passwordIsValid);
+            console.log('checked');
+        }, 500);
         return () => {
-            clearTimeout(timeOut)
-        }
-    }, [emailIsValid, passwordIsValid])
+            clearTimeout(timeOut);
+        };
+    }, [emailIsValid, passwordIsValid]);
 
     const emailChangeHandler = (event) => {
         setEnteredEmail(event.target.value);
@@ -38,9 +38,14 @@ const Login = () => {
         setPasswordIsValid(enteredPassword.trim().length > 6);
     };
 
+    const submitHandler = (event) => {
+        event.preventDefault();
+        props.onLogin(enteredEmail, enteredPassword);
+    };
+
     return (
         <Card className="login">
-            <form>
+            <form onSubmit={submitHandler}>
                 <div className={`control ${emailIsValid === false ? 'invalid' : ''}`}>
                     <label htmlFor="email">Email</label>
                     <input
@@ -62,11 +67,9 @@ const Login = () => {
                     />
                 </div>
                 <div className="actions">
-                    <Button type="submit"
-                    disabled={!formIsValid}
-                    >
+                    <Button type="submit" disabled={!formIsValid}>
                         Login
-                        </Button>
+                    </Button>
                 </div>
             </form>
         </Card>
