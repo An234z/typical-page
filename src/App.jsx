@@ -1,9 +1,17 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import MainHeader from './components/MainHeader/MainHeader';
 import Login from './components/Login/Login';
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+
+  // Kontrolli, kas kasutaja on juba sisse logitud
+  useEffect(() => {
+    const storedUserLoggedIn = localStorage.getItem('isLoggedUser');
+    if (storedUserLoggedIn === 'true') {
+      setLoggedIn(true);
+    }
+  }, []);
 
   const loginHandler = () => {
     localStorage.setItem('isLoggedUser', 'true');
@@ -17,9 +25,10 @@ function App() {
 
   return (
     <Fragment>
-      <MainHeader />
+      <MainHeader isLoggedIn={isLoggedIn} onLogout={logoutHandler} />
       <main>
-        <Login onLogin={loginHandler} />
+        {!isLoggedIn && <Login onLogin={loginHandler} />}
+        {isLoggedIn && <h2 style={{ textAlign: 'center' }}>Welcome back!</h2>}
       </main>
     </Fragment>
   );
