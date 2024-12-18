@@ -2,10 +2,11 @@ import { Fragment, useState, useEffect } from 'react';
 import MainHeader from './components/MainHeader/MainHeader';
 import Login from './components/Login/Login';
 
+import AuthContext from './components/store/auth-context';
+
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
-  // Kontrolli, kas kasutaja on juba sisse logitud
   useEffect(() => {
     const storedUserLoggedIn = localStorage.getItem('isLoggedUser');
     if (storedUserLoggedIn === 'true') {
@@ -24,13 +25,16 @@ function App() {
   };
 
   return (
-    <Fragment>
-      <MainHeader isLoggedIn={isLoggedIn} onLogout={logoutHandler} />
+    <AuthContext.Provider value={{
+      loggedIn: isLoggedIn, 
+      onLogout: logoutHandler
+    }}>
+      <MainHeader onLogout={logoutHandler} />
       <main>
         {!isLoggedIn && <Login onLogin={loginHandler} />}
         {isLoggedIn && <h2 style={{ textAlign: 'center' }}>Welcome back!</h2>}
       </main>
-    </Fragment>
+    </AuthContext.Provider>
   );
 }
 

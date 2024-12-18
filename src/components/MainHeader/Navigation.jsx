@@ -1,10 +1,15 @@
 import './Navigation.css'
 import Button from '../UI/Button'
 
+import AuthContext from '../store/auth-context'
+
 const Navigation = (props) => {
     return (
-        <nav className="nav">
-            <ul>
+        <AuthContext.Consumer>
+            {(context) => {
+                return(
+                    <nav className="nav">
+                     <ul>
                 <li>
                     <a href="/users">Users</a>
                     </li>
@@ -18,6 +23,9 @@ const Navigation = (props) => {
                 )}
             </ul>
         </nav>
+                )
+            }}
+        </AuthContext.Consumer>
     )
 }
 

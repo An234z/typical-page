@@ -2,10 +2,11 @@ import './MainHeader.css';
 import Navigation from './Navigation';
 
 const MainHeader = (props) => {
+
     return (
         <header className="main-header">
             <h1>A Typical Page</h1>
-            <Navigation loggedIn={props.isAuthenticated} onLogout={props.onLogout} />
+            <Navigation onLogout={props.onLogout} />
         </header>
     );
 };
